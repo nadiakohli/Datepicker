@@ -1,11 +1,11 @@
 window.onload = () => {
   const date = new Date();
-  const buttonShow = document.getElementById('openButton');
+  const buttonDisplay = document.getElementById('openButton');
   const calendar = document.getElementById('calendar');
 
-  buttonShow.addEventListener('click', () => {
+  buttonDisplay.addEventListener('click', () => {
     calendar.style.display = 'flex';
-    buttonShow.style.display = 'none';
+    buttonDisplay.style.display = 'none';
   });
   
   const toggleButton = document.querySelector('.toggle-button');
