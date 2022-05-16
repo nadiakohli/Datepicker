@@ -5,28 +5,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
   <title>Datepicker</title>
 </head>
 <body>
   <div class="container">
-    <button id="openButton"><i class="fas fa-calendar"></i></button>
+    <div class="input-wrapper">
+      <form id="form" action="">
+        <input type="text" class="form-control" name="date" disabled>
+      </form>
+      <button id="openButton"><i class="fas fa-calendar"></i></button>
+    </div>
     <div id="calendar" class="datepicker active">
       <div class="header">
         <div class="month">
-          <select>
-              <option value="0">January</option>
-              <option value="1">February</option>
-              <option value="2">March</option>
-              <option value="3">April</option>
-              <option value="4">May</option>
-              <option value="5">June</option>
-              <option value="6">July</option>
-              <option value="7">August</option>
-              <option value="8">September</option>
-              <option value="9">October</option>
-              <option value="10">November</option>
-              <option value="11">December</option>
+          <select id="selectMonths">
+              <option value="0" label="Jan">January</option>
+              <option value="1" label="Feb">February</option>
+              <option value="2" label="Mar">March</option>
+              <option value="3" label="Apr">April</option>
+              <option value="4" label="May">May</option>
+              <option value="5" label="Jun">June</option>
+              <option value="6" label="Jul">July</option>
+              <option value="7" label="Aug">August</option>
+              <option value="8" label="Sep">September</option>
+              <option value="9" label="Oct">October</option>
+              <option value="10" label="Nov">November</option>
+              <option value="11" label="Dec">December</option>
           </select>
         </div>
         <div class="year">
@@ -46,6 +51,10 @@
       </div>
       <div class="days"></div>
       <div class="mode">
+        <div class="wrapper-btns">
+          <button class="save">Save</button>
+          <button class="cancel">Cancel</button>
+        </div>
         <div class="dark">
           <p>Dark Mode</p>
           <div class="toggle">

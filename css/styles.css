@@ -85,7 +85,6 @@ option {
   padding: 0 0.4rem;
   display: flex;
   align-items: center;
-  margin-top: 30px;
 }
 
 .weekdays div {
@@ -118,8 +117,8 @@ option {
 .days div {
   font-size: 1rem;
   margin: 0.4rem;
-  width: calc(19.2rem /7);
-  height: 3rem;
+  width: calc(20.5rem /7);
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,7 +148,7 @@ option {
   padding: 15px;
   background-color: #14152a;
   border-radius: 7%;
-  width: 445px;
+  width: 465px;
   height: 565px;
 }
 
@@ -159,11 +158,9 @@ option {
 
 .mode {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: end;
-  margin-bottom: 25px;
-  
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 25px 0 25px;
 }
 
 .year i {
@@ -191,11 +188,12 @@ option {
 }
 
 #openButton {
+  display: flex;
   background-color: #FA8072;
   border: none;
   border-radius: 5px;
   color: #fff;
-  padding: 3px 10px;
+  padding: 6px 10px;
   text-decoration: none;
   font-size: 26px;
   font-family: Garamond, serif;
@@ -252,4 +250,52 @@ option {
 .today {
   background-color: #201de7;
   border-radius: 50%;
+}
+
+input {
+  display: flex;
+  border-radius: 5px;
+  padding: 4px 10px;
+  margin-right: 5px;
+  width: 280px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input:disabled {
+  background: #ccc;
+}
+
+.today-light {
+  background-color: salmon;
+}
+
+.day-light {
+  background-color: salmon;
+}
+
+.today-dark {
+  background-color: #201de7;
+}
+
+.save, .cancel {
+  display: flex;
+  background-color: #78798e;
+  border: none;
+  border-radius: 3px;
+  color: #000;
+  padding: 6px 10px;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: Garamond, serif;
+}
+
+.wrapper-btns {
+  display: flex;
+  width: 120px;
+  justify-content: space-between;
 }

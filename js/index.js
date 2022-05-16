@@ -2,10 +2,20 @@ window.onload = () => {
   const date = new Date();
   const buttonDisplay = document.getElementById('openButton');
   const calendar = document.getElementById('calendar');
+  const input = document.querySelector('input.form-control');
 
   buttonDisplay.addEventListener('click', () => {
+    const days = document.querySelectorAll('.current-date, .today');
     calendar.style.display = 'flex';
+    input.style.display = 'none';
+    input.value = '';
     buttonDisplay.style.display = 'none';
+    days.forEach((day) => {
+      if (day.classList.contains('active')) {
+        day.classList.remove('active');
+        day.style.backgroundColor = '';
+      }
+    });
   });
   
   const toggleButton = document.querySelector('.toggle-button');
@@ -24,28 +34,31 @@ window.onload = () => {
   const toggleMode = (el) => {
     const today = document.querySelector('.today');
     const days = document.querySelectorAll('.current-date, .today');
+    const year = document.querySelector('.year p');
   
     el.currentTarget.classList.toggle('active');
     isDarkMode = !isDarkMode;
     const active = el.currentTarget.classList.contains('active');
     const color = active ? 'black' : 'white';
-    if (today) {
-      today.style.backgroundColor = active ? 'salmon' : '';
-    }
     datepicker.style.backgroundColor = active ? 'white' : '';
     datepicker.style.color = color;
     btnPrev.style.color = color;
     btnNext.style.color = color;
     weekdays.classList.toggle('weekdays-light');
     containerDays.classList.toggle('days-light');
+    if (today) {
+      today.style.backgroundColor = isDarkMode ? '#201de7' : 'salmon';
+    }
     select.style.color = color;
+    
 
     months.forEach((opt) => {
       opt.style.backgroundColor = active ? '#fa80729a' : '';
     });
 
     toggleLabel.style.color = color;
-    styleCells();
+    styleCells(year.innerText);
+    
     days.forEach((day) => {
       if (day.classList.contains('active')) {
         day.style.backgroundColor = isDarkMode ? '#4d4c5a' : 'salmon';
@@ -53,25 +66,94 @@ window.onload = () => {
     })
   };
 
-  const styleCells = () => {
+  const modifyingBackgroundColor = () => {
+    const today = document.querySelector('.days div.today');
+    if (today !== null && toggleButton.classList.contains('active')) {
+      today.classList.add('today-light');
+    };
+  };
+  
+  const saveBtn = document.querySelector('.save');
+  const cancelBtn = document.querySelector('.cancel');
+  
+  const styleCells = (year) => {
+    let selectedDates = [];
     const days = document.querySelectorAll('.current-date, .today');
-    days.forEach((day1, index1) => {
+    days.forEach((day1) => {
       day1.addEventListener('click', (el) => {
         el.currentTarget.classList.add('active');
-        el.currentTarget.style.backgroundColor = isDarkMode ? '#4d4c5a' : 'salmon';
-        days.forEach((day2, index2) => {
-          if (index1 !== index2) {
-            day2.classList.remove('active');
-            if (day2.classList.contains('today')) {
-              day2.style.backgroundColor = isDarkMode ? '' : 'salmon';
-            } else {
-              day2.style.backgroundColor = '';
+  
+        let date1;
+        let date2;
+        console.log(selectedDates)
+        
+        if (selectedDates.length < 2) {
+          selectedDates.push(`${month} ${el.currentTarget.innerText} ${year}`);
+            date1 = +selectedDates[0].split(' ', 3).splice(1,1).join('');
+            if (selectedDates[1]) {
+              date2 = +selectedDates[1].split(' ', 3).splice(1,1).join('');
             }
-          };
+          
+            if (date1 > date2) {
+              days.forEach((day) => {
+                if (day.classList.contains('active')) {
+                  day.classList.remove('active');
+                  day.style.backgroundColor = '';
+                };
+              });
+              selectedDates = []; 
+              el.currentTarget.classList.add('active');
+              selectedDates.push(`${month} ${el.currentTarget.innerText} ${year}`);
+            };
+            let range = [];
+            for (let i = date1; i <= date2; i++) {
+              range.push(i);
+            }
+            console.log(range, date1, date2);
+
+            [...days].forEach((day) => {
+              if (range.includes(+day.innerText)) {
+                day.classList.add('active');
+                day.style.backgroundColor = isDarkMode ? '#4d4c5a' : 'salmon';
+              };
+            });
+        } else {
+          days.forEach((day) => {
+            if (day.classList.contains('active')) {
+              day.classList.remove('active');
+              day.style.backgroundColor = '';
+            }
+          });
+          selectedDates = [];
+          el.currentTarget.classList.add('active');
+          selectedDates.push(`${month} ${el.currentTarget.innerText} ${year}`);
+        };
+
+        el.currentTarget.style.backgroundColor = isDarkMode ? '#4d4c5a' : 'salmon';
+
+        saveBtn.addEventListener('click', () => {
+          input.value = `${selectedDates[0]} - ${selectedDates[1]}`;
+          calendar.style.display = 'none';
+          input.style.display = 'flex';
+          buttonDisplay.style.display = 'flex';
+        });
+
+        cancelBtn.addEventListener('click', () => {
+          document.getElementById('form').reset();
+          calendar.style.display = 'none';
+          input.style.display = 'flex';
+          buttonDisplay.style.display = 'flex';
         });
       });
     });
-  }
+
+    const months = document.querySelectorAll('select');
+    let month;
+    months.forEach(() => {
+      const selectMonths = document.getElementById('selectMonths');
+      month = selectMonths.options[select.selectedIndex].text;
+    });
+  };
 
   toggleButton.addEventListener('click', toggleMode);
 
@@ -89,6 +171,7 @@ window.onload = () => {
       const totalPrevMonthDays = new Date(selectedYear, monthIndex, 0).getDate();
       const firstWeekDay = new Date(selectedYear, monthIndex, 1).getDay();
       displayDaysInMonth(totalPrevMonthDays, firstWeekDay, totalDaysInMonth, monthIndex, selectedYear);
+      modifyingBackgroundColor();
     };
   });
 
@@ -100,6 +183,7 @@ window.onload = () => {
     const totalPrevMonthDays = new Date(selectedYear, monthIndex, 0).getDate();
     const firstWeekDay = new Date(selectedYear, monthIndex, 1).getDay();
     displayDaysInMonth(totalPrevMonthDays, firstWeekDay, totalDaysInMonth, monthIndex, selectedYear);
+    modifyingBackgroundColor();
   });
 
   months.forEach((m) => {
@@ -108,7 +192,7 @@ window.onload = () => {
     }
   });
 
-  select.addEventListener('click', (el) => {
+  select.addEventListener('click', (el) => { 
     const year = document.querySelector('.year p');
     const yearValue = +year.innerText;
     const monthIndex = +el.target.value;
@@ -116,7 +200,8 @@ window.onload = () => {
     const totalPrevMonthDays = new Date(yearValue, monthIndex, 0).getDate();
     const firstWeekDay = new Date(yearValue, monthIndex, 1).getDay();
     displayDaysInMonth(totalPrevMonthDays, firstWeekDay, totalDaysInMonth, monthIndex, yearValue);
-  })
+    modifyingBackgroundColor();
+  });
 
   const totalDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const totalPrevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
@@ -152,8 +237,7 @@ window.onload = () => {
       containerDays.append(div);
     });
 
-    styleCells();
-
+    styleCells(year.innerText);
     return days;
   }
   
